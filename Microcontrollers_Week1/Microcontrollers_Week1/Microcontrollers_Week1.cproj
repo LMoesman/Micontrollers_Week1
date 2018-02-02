@@ -198,12 +198,6 @@
     <Compile Include="src\main.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="src\mainExample.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="src\mainExample.h">
-      <SubType>compile</SubType>
-    </Compile>
     <None Include="src\ASF\common\boards\board.h">
       <SubType>compile</SubType>
     </None>
