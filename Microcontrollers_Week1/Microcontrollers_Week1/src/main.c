@@ -49,15 +49,16 @@ Version :    	DMK, Initial code
 
 void ExecuteB2()
 /*
-short:			main() loop, entry point of executable
+short:			ExecuteB2(), blinks pin 6 and 7 
 inputs:
 outputs:
-notes:			Looping forever, flipping bits on PORTD
-Version :    	DMK, Initial code
+notes:			
+Version :    	V1.0
+Author:			Lars Moesman & Rick Verstraten
 *******************************************************************/
 {
 	DDRD = 0b11111111;	//all ports of D are output now
-	PORTD = 0x06;		//pin 6 and 7 are turned on 0b00000110  
+	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000  
 	wait(500);
 	PORTD = 0x00;		//all pins are turned off
 	wait(500);

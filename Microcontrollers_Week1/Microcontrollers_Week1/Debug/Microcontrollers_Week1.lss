@@ -149,16 +149,16 @@ Author	:		dkroeske@gmail.com
   be:	08 95       	ret
 
 000000c0 <ExecuteB2>:
-outputs:
-notes:			Looping forever, flipping bits on PORTD
-Version :    	DMK, Initial code
+notes:			
+Version :    	V1.0
+Author:			Lars Moesman & Rick Verstraten
 *******************************************************************/
 {
 	DDRD = 0b11111111;	//all ports of D are output now
   c0:	8f ef       	ldi	r24, 0xFF	; 255
   c2:	81 bb       	out	0x11, r24	; 17
-	PORTD = 0x06;		//pin 6 and 7 are turned on 0b00000110  
-  c4:	86 e0       	ldi	r24, 0x06	; 6
+	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000  
+  c4:	80 ec       	ldi	r24, 0xC0	; 192
   c6:	82 bb       	out	0x12, r24	; 18
 	wait(500);
   c8:	84 ef       	ldi	r24, 0xF4	; 244
