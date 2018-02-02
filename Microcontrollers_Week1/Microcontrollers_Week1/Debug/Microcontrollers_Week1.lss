@@ -3,31 +3,31 @@ Microcontrollers_Week1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000132  2**0
+  0 .data         00000000  00800100  00800100  0000016e  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000de  00000000  00000000  00000054  2**1
+  1 .text         0000011a  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000132  2**0
+  2 .comment      00000030  00000000  00000000  0000016e  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000164  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001a0  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000028  00000000  00000000  000001a0  2**0
+  4 .debug_aranges 00000030  00000000  00000000  000001dc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000008fe  00000000  00000000  000001c8  2**0
+  5 .debug_info   00000953  00000000  00000000  0000020c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000833  00000000  00000000  00000ac6  2**0
+  6 .debug_abbrev 00000874  00000000  00000000  00000b5f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000047b  00000000  00000000  000012f9  2**0
+  7 .debug_line   000004a4  00000000  00000000  000013d3  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000034  00000000  00000000  00001774  2**2
+  8 .debug_frame  00000060  00000000  00000000  00001878  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000072c1  00000000  00000000  000017a8  2**0
+  9 .debug_str    000072c2  00000000  00000000  000018d8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000006a  00000000  00000000  00008a69  2**0
+ 10 .debug_loc    00000117  00000000  00000000  00008b9a  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000018  00000000  00000000  00008ad3  2**0
+ 11 .debug_ranges 00000020  00000000  00000000  00008cb1  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  00008aeb  2**0
+ 12 .debug_macro  00002a56  00000000  00000000  00008cd1  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -111,16 +111,16 @@ Disassembly of section .text:
   92:	d0 e1       	ldi	r29, 0x10	; 16
   94:	de bf       	out	0x3e, r29	; 62
   96:	cd bf       	out	0x3d, r28	; 61
-  98:	13 d0       	rcall	.+38     	; 0xc0 <main>
-  9a:	1f c0       	rjmp	.+62     	; 0xda <_exit>
+  98:	33 d0       	rcall	.+102    	; 0x100 <main>
+  9a:	3d c0       	rjmp	.+122    	; 0x116 <_exit>
 
 0000009c <__bad_interrupt>:
   9c:	b1 cf       	rjmp	.-158    	; 0x0 <__vectors>
 
 0000009e <wait>:
-				clock value is set. This is used by _delay_ms inside
 				util/delay.h
 Version :    	DMK, Initial code
+Author	:		dkroeske@gmail.com
 *******************************************************************/
 {
 	for (int i=0; i<ms; i++)
@@ -148,44 +148,83 @@ Version :    	DMK, Initial code
   bc:	a9 f7       	brne	.-22     	; 0xa8 <wait+0xa>
   be:	08 95       	ret
 
-000000c0 <main>:
+000000c0 <ExecuteB3>:
+				clock value is set. This is used by _delay_ms inside
+				util/delay.h
+Version :    	DMK, Initial code
+Author	:		dkroeske@gmail.com
+*******************************************************************/
+{
+  c0:	cf 93       	push	r28
+  c2:	df 93       	push	r29
+	DDRD = 0b10000000;
+  c4:	20 e8       	ldi	r18, 0x80	; 128
+  c6:	21 bb       	out	0x11, r18	; 17
+	DDRC = 0b11111110;
+  c8:	2e ef       	ldi	r18, 0xFE	; 254
+  ca:	24 bb       	out	0x14, r18	; 20
+	if(PINC == 0b00000001 || *state == 1) {
+  cc:	23 b3       	in	r18, 0x13	; 19
+  ce:	21 30       	cpi	r18, 0x01	; 1
+  d0:	31 f0       	breq	.+12     	; 0xde <ExecuteB3+0x1e>
+  d2:	fc 01       	movw	r30, r24
+  d4:	20 81       	ld	r18, Z
+  d6:	31 81       	ldd	r19, Z+1	; 0x01
+  d8:	21 30       	cpi	r18, 0x01	; 1
+  da:	31 05       	cpc	r19, r1
+  dc:	71 f4       	brne	.+28     	; 0xfa <ExecuteB3+0x3a>
+  de:	ec 01       	movw	r28, r24
+		PORTD = 0x80;
+  e0:	80 e8       	ldi	r24, 0x80	; 128
+  e2:	82 bb       	out	0x12, r24	; 18
+		wait(500);
+  e4:	84 ef       	ldi	r24, 0xF4	; 244
+  e6:	91 e0       	ldi	r25, 0x01	; 1
+  e8:	da df       	rcall	.-76     	; 0x9e <wait>
+		PORTD = 0x00;
+  ea:	12 ba       	out	0x12, r1	; 18
+		wait(500);
+  ec:	84 ef       	ldi	r24, 0xF4	; 244
+  ee:	91 e0       	ldi	r25, 0x01	; 1
+  f0:	d6 df       	rcall	.-84     	; 0x9e <wait>
+		*state = 1;
+  f2:	81 e0       	ldi	r24, 0x01	; 1
+  f4:	90 e0       	ldi	r25, 0x00	; 0
+  f6:	99 83       	std	Y+1, r25	; 0x01
+  f8:	88 83       	st	Y, r24
+	}
+	
+}
+  fa:	df 91       	pop	r29
+  fc:	cf 91       	pop	r28
+  fe:	08 95       	ret
+
+00000100 <main>:
+inputs:
+outputs:
 notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {
-	
-	DDRD = 0b11111111;			// All pins PORTD are set to output 
-  c0:	8f ef       	ldi	r24, 0xFF	; 255
-  c2:	81 bb       	out	0x11, r24	; 17
-	
-	while (1)
-	{
-		PORTD = 0xAA;			// Write 10101010b PORTD
-  c4:	da ea       	ldi	r29, 0xAA	; 170
-		wait( 250 );				
-		PORTD = 0x55;			// Write 01010101b PORTD
-  c6:	c5 e5       	ldi	r28, 0x55	; 85
-	
-	DDRD = 0b11111111;			// All pins PORTD are set to output 
+ 100:	cf 93       	push	r28
+ 102:	df 93       	push	r29
+ 104:	00 d0       	rcall	.+0      	; 0x106 <main+0x6>
+ 106:	cd b7       	in	r28, 0x3d	; 61
+ 108:	de b7       	in	r29, 0x3e	; 62
+	int state = 0;
+ 10a:	1a 82       	std	Y+2, r1	; 0x02
+ 10c:	19 82       	std	Y+1, r1	; 0x01
 	
 	while (1)
 	{
-		PORTD = 0xAA;			// Write 10101010b PORTD
-  c8:	d2 bb       	out	0x12, r29	; 18
-		wait( 250 );				
-  ca:	8a ef       	ldi	r24, 0xFA	; 250
-  cc:	90 e0       	ldi	r25, 0x00	; 0
-  ce:	e7 df       	rcall	.-50     	; 0x9e <wait>
-		PORTD = 0x55;			// Write 01010101b PORTD
-  d0:	c2 bb       	out	0x12, r28	; 18
-		wait( 250 );				
-  d2:	8a ef       	ldi	r24, 0xFA	; 250
-  d4:	90 e0       	ldi	r25, 0x00	; 0
-  d6:	e3 df       	rcall	.-58     	; 0x9e <wait>
-  d8:	f7 cf       	rjmp	.-18     	; 0xc8 <main+0x8>
+		ExecuteB3(&state);
+ 10e:	ce 01       	movw	r24, r28
+ 110:	01 96       	adiw	r24, 0x01	; 1
+ 112:	d6 df       	rcall	.-84     	; 0xc0 <ExecuteB3>
+ 114:	fc cf       	rjmp	.-8      	; 0x10e <main+0xe>
 
-000000da <_exit>:
-  da:	f8 94       	cli
+00000116 <_exit>:
+ 116:	f8 94       	cli
 
-000000dc <__stop_program>:
-  dc:	ff cf       	rjmp	.-2      	; 0xdc <__stop_program>
+00000118 <__stop_program>:
+ 118:	ff cf       	rjmp	.-2      	; 0x118 <__stop_program>
