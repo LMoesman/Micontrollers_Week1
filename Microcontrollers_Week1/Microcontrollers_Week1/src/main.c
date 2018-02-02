@@ -39,12 +39,27 @@ Version :    	DMK, Initial code
 *******************************************************************/
 {
 	
-
-	
 	while (1)
 	{
-		
+		ExecuteB2();
 	}
 
 	return 1;
 }
+
+void ExecuteB2()
+/*
+short:			main() loop, entry point of executable
+inputs:
+outputs:
+notes:			Looping forever, flipping bits on PORTD
+Version :    	DMK, Initial code
+*******************************************************************/
+{
+	DDRD = 0b11111111;	//all ports of D are output now
+	PORTD = 0x06;		//pin 6 and 7 are turned on 0b00000110  
+	wait(500);
+	PORTD = 0x00;		//all pins are turned off
+	wait(500);
+}
+
