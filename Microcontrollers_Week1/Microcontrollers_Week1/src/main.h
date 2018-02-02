@@ -11,7 +11,11 @@
 #define F_CPU 8000000
 
 void wait(int);
+<<<<<<< HEAD
 void ExecuteB2();
+=======
+void ExecuteB3(int*);
+>>>>>>> B.3
 
 
 #endif /* MAIN_H_ */

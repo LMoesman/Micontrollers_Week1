@@ -29,6 +29,48 @@ Author	:		dkroeske@gmail.com
 }
 
 /******************************************************************/
+void ExecuteB2()
+/*
+short:			ExecuteB2(), blinks pin 6 and 7
+inputs:
+outputs:
+notes:
+Version :    	V1.0
+Author:			Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	DDRD = 0b11111111;	//all ports of D are output now
+	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000
+	wait(500);
+	PORTD = 0x00;		//all pins are turned off
+	wait(500);
+}
+
+
+/******************************************************************/
+void ExecuteB3(int *state)
+/* 
+short:			Checks if button if pressed and activates animation
+inputs:			int *state(the state of the button press)
+outputs:		
+notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	DDRD = 0b10000000;
+	DDRC = 0b11111110;
+	if(PINC == 0b00000001 || *state == 1) {
+		PORTD = 0x80;
+		wait(500);
+		PORTD = 0x00;
+		wait(500);
+		*state = 1;
+	}
+	
+}
+
+/******************************************************************/
 int main( void )
 /*
 short:			main() loop, entry point of executable
@@ -37,30 +79,16 @@ outputs:
 notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
-{
+{	
+	int state = 0;
 	
 	while (1)
 	{
-		ExecuteB2();
+		//ExecuteB2();
+		//ExecuteB3(&state);
 	}
 
 	return 1;
 }
 
-void ExecuteB2()
-/*
-short:			ExecuteB2(), blinks pin 6 and 7 
-inputs:
-outputs:
-notes:			
-Version :    	V1.0
-Author:			Lars Moesman & Rick Verstraten
-*******************************************************************/
-{
-	DDRD = 0b11111111;	//all ports of D are output now
-	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000  
-	wait(500);
-	PORTD = 0x00;		//all pins are turned off
-	wait(500);
-}
 
