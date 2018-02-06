@@ -3,31 +3,31 @@ Microcontrollers_Week1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  00000196  2**0
+  0 .data         00000004  00800100  00000186  000001fa  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000142  00000000  00000000  00000054  2**1
+  1 .text         00000186  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000196  2**0
+  2 .comment      00000030  00000000  00000000  000001fe  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001c8  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000230  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000048  00000000  00000000  00000204  2**0
+  4 .debug_aranges 00000060  00000000  00000000  0000026c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000aa0  00000000  00000000  0000024c  2**0
+  5 .debug_info   00000bef  00000000  00000000  000002cc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000008cf  00000000  00000000  00000cec  2**0
+  6 .debug_abbrev 00000912  00000000  00000000  00000ebb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   0000055a  00000000  00000000  000015bb  2**0
+  7 .debug_line   00000620  00000000  00000000  000017cd  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000000a4  00000000  00000000  00001b18  2**2
+  8 .debug_frame  00000100  00000000  00000000  00001df0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00007323  00000000  00000000  00001bbc  2**0
+  9 .debug_str    00007752  00000000  00000000  00001ef0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000174  00000000  00000000  00008edf  2**0
+ 10 .debug_loc    0000035a  00000000  00000000  00009642  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000038  00000000  00000000  00009053  2**0
+ 11 .debug_ranges 00000050  00000000  00000000  0000999c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  0000908b  2**0
+ 12 .debug_macro  00002c34  00000000  00000000  000099ec  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -116,119 +116,208 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	e2 e4       	ldi	r30, 0x42	; 66
+  9e:	e6 e8       	ldi	r30, 0x86	; 134
   a0:	f1 e0       	ldi	r31, 0x01	; 1
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
   a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
   a8:	07 90       	elpm	r0, Z+
   aa:	0d 92       	st	X+, r0
-  ac:	a0 30       	cpi	r26, 0x00	; 0
+  ac:	a4 30       	cpi	r26, 0x04	; 4
   ae:	b1 07       	cpc	r27, r17
   b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
-  b2:	36 d0       	rcall	.+108    	; 0x120 <main>
-  b4:	44 c0       	rjmp	.+136    	; 0x13e <_exit>
+  b2:	58 d0       	rcall	.+176    	; 0x164 <main>
+  b4:	66 c0       	rjmp	.+204    	; 0x182 <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	a4 cf       	rjmp	.-184    	; 0x0 <__vectors>
 
-000000b8 <wait>:
-	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
-		PORTD = pattern2[index].data;
+000000b8 <CheckButton>:
 		wait(pattern2[index].wait);
 	}
 	
 }
-  b8:	18 16       	cp	r1, r24
-  ba:	19 06       	cpc	r1, r25
-  bc:	6c f4       	brge	.+26     	; 0xd8 <wait+0x20>
-  be:	20 e0       	ldi	r18, 0x00	; 0
-  c0:	30 e0       	ldi	r19, 0x00	; 0
-  c2:	ef ec       	ldi	r30, 0xCF	; 207
-  c4:	f7 e0       	ldi	r31, 0x07	; 7
-  c6:	31 97       	sbiw	r30, 0x01	; 1
-  c8:	f1 f7       	brne	.-4      	; 0xc6 <wait+0xe>
-  ca:	00 c0       	rjmp	.+0      	; 0xcc <wait+0x14>
-  cc:	00 00       	nop
-  ce:	2f 5f       	subi	r18, 0xFF	; 255
-  d0:	3f 4f       	sbci	r19, 0xFF	; 255
-  d2:	82 17       	cp	r24, r18
-  d4:	93 07       	cpc	r25, r19
-  d6:	a9 f7       	brne	.-22     	; 0xc2 <wait+0xa>
-  d8:	08 95       	ret
 
-000000da <ExecuteB4knightRider>:
-  da:	cf 93       	push	r28
-  dc:	df 93       	push	r29
-  de:	ec 01       	movw	r28, r24
-  e0:	88 81       	ld	r24, Y
-  e2:	99 81       	ldd	r25, Y+1	; 0x01
-  e4:	89 2b       	or	r24, r25
-  e6:	39 f4       	brne	.+14     	; 0xf6 <ExecuteB4knightRider+0x1c>
-  e8:	85 e5       	ldi	r24, 0x55	; 85
-  ea:	90 e0       	ldi	r25, 0x00	; 0
-  ec:	e5 df       	rcall	.-54     	; 0xb8 <wait>
-  ee:	82 b3       	in	r24, 0x12	; 18
-  f0:	88 0f       	add	r24, r24
-  f2:	82 bb       	out	0x12, r24	; 18
-  f4:	06 c0       	rjmp	.+12     	; 0x102 <ExecuteB4knightRider+0x28>
-  f6:	85 e5       	ldi	r24, 0x55	; 85
-  f8:	90 e0       	ldi	r25, 0x00	; 0
-  fa:	de df       	rcall	.-68     	; 0xb8 <wait>
-  fc:	82 b3       	in	r24, 0x12	; 18
-  fe:	86 95       	lsr	r24
- 100:	82 bb       	out	0x12, r24	; 18
- 102:	82 b3       	in	r24, 0x12	; 18
- 104:	80 3c       	cpi	r24, 0xC0	; 192
- 106:	21 f4       	brne	.+8      	; 0x110 <ExecuteB4knightRider+0x36>
- 108:	81 e0       	ldi	r24, 0x01	; 1
- 10a:	90 e0       	ldi	r25, 0x00	; 0
- 10c:	99 83       	std	Y+1, r25	; 0x01
- 10e:	88 83       	st	Y, r24
- 110:	82 b3       	in	r24, 0x12	; 18
- 112:	83 30       	cpi	r24, 0x03	; 3
- 114:	11 f4       	brne	.+4      	; 0x11a <ExecuteB4knightRider+0x40>
- 116:	19 82       	std	Y+1, r1	; 0x01
- 118:	18 82       	st	Y, r1
+int CheckButton(int *state) {
+  b8:	fc 01       	movw	r30, r24
+	
+	DDRC = 0b11111110;
+  ba:	9e ef       	ldi	r25, 0xFE	; 254
+  bc:	94 bb       	out	0x14, r25	; 20
+	if(PINC == 0b00000001) {
+  be:	93 b3       	in	r25, 0x13	; 19
+  c0:	91 30       	cpi	r25, 0x01	; 1
+  c2:	69 f4       	brne	.+26     	; 0xde <CheckButton+0x26>
+		*state = !*state;
+  c4:	81 e0       	ldi	r24, 0x01	; 1
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	20 81       	ld	r18, Z
+  ca:	31 81       	ldd	r19, Z+1	; 0x01
+  cc:	23 2b       	or	r18, r19
+  ce:	11 f0       	breq	.+4      	; 0xd4 <CheckButton+0x1c>
+  d0:	80 e0       	ldi	r24, 0x00	; 0
+  d2:	90 e0       	ldi	r25, 0x00	; 0
+  d4:	91 83       	std	Z+1, r25	; 0x01
+  d6:	80 83       	st	Z, r24
+		return 1;
+  d8:	81 e0       	ldi	r24, 0x01	; 1
+  da:	90 e0       	ldi	r25, 0x00	; 0
+  dc:	08 95       	ret
+	}
+	return 0;
+  de:	80 e0       	ldi	r24, 0x00	; 0
+  e0:	90 e0       	ldi	r25, 0x00	; 0
+}
+  e2:	08 95       	ret
+
+000000e4 <customWait>:
+				clock value is set. This is used by _delay_ms inside
+				util/delay.h
+Version :    	DMK, Initial code
+Author	:		dkroeske@gmail.com
+*******************************************************************/
+{
+  e4:	ef 92       	push	r14
+  e6:	ff 92       	push	r15
+  e8:	0f 93       	push	r16
+  ea:	1f 93       	push	r17
+  ec:	cf 93       	push	r28
+  ee:	df 93       	push	r29
+	for (int i=0; i<ms; i++)
+  f0:	18 16       	cp	r1, r24
+  f2:	19 06       	cpc	r1, r25
+  f4:	94 f4       	brge	.+36     	; 0x11a <customWait+0x36>
+  f6:	7b 01       	movw	r14, r22
+  f8:	8c 01       	movw	r16, r24
+  fa:	c0 e0       	ldi	r28, 0x00	; 0
+  fc:	d0 e0       	ldi	r29, 0x00	; 0
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  fe:	8f ec       	ldi	r24, 0xCF	; 207
+ 100:	97 e0       	ldi	r25, 0x07	; 7
+ 102:	01 97       	sbiw	r24, 0x01	; 1
+ 104:	f1 f7       	brne	.-4      	; 0x102 <customWait+0x1e>
+ 106:	00 c0       	rjmp	.+0      	; 0x108 <customWait+0x24>
+ 108:	00 00       	nop
+	{
+		_delay_ms( 1 );		// library function (max 30 ms at 8MHz)
+		if (CheckButton(state) == 1) {break;}
+ 10a:	c7 01       	movw	r24, r14
+ 10c:	d5 df       	rcall	.-86     	; 0xb8 <CheckButton>
+ 10e:	01 97       	sbiw	r24, 0x01	; 1
+ 110:	21 f0       	breq	.+8      	; 0x11a <customWait+0x36>
+				util/delay.h
+Version :    	DMK, Initial code
+Author	:		dkroeske@gmail.com
+*******************************************************************/
+{
+	for (int i=0; i<ms; i++)
+ 112:	21 96       	adiw	r28, 0x01	; 1
+ 114:	0c 17       	cp	r16, r28
+ 116:	1d 07       	cpc	r17, r29
+ 118:	91 f7       	brne	.-28     	; 0xfe <customWait+0x1a>
+	{
+		_delay_ms( 1 );		// library function (max 30 ms at 8MHz)
+		if (CheckButton(state) == 1) {break;}
+	}
+}
  11a:	df 91       	pop	r29
  11c:	cf 91       	pop	r28
- 11e:	08 95       	ret
+ 11e:	1f 91       	pop	r17
+ 120:	0f 91       	pop	r16
+ 122:	ff 90       	pop	r15
+ 124:	ef 90       	pop	r14
+ 126:	08 95       	ret
 
-00000120 <main>:
+00000128 <ExecuteB6>:
+outputs:
+notes:			you can choose from pattern1(looping) or pattern2(custom animation)
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+ 128:	cf 93       	push	r28
+ 12a:	df 93       	push	r29
+ 12c:	ec 01       	movw	r28, r24
+	DDRD = 0b10000000;
+ 12e:	80 e8       	ldi	r24, 0x80	; 128
+ 130:	81 bb       	out	0x11, r24	; 17
+	
+	
+	PORTD = 0x80;
+ 132:	82 bb       	out	0x12, r24	; 18
+	customWait(waitState[*state], state);
+ 134:	e8 81       	ld	r30, Y
+ 136:	f9 81       	ldd	r31, Y+1	; 0x01
+ 138:	ee 0f       	add	r30, r30
+ 13a:	ff 1f       	adc	r31, r31
+ 13c:	e0 50       	subi	r30, 0x00	; 0
+ 13e:	ff 4f       	sbci	r31, 0xFF	; 255
+ 140:	be 01       	movw	r22, r28
+ 142:	80 81       	ld	r24, Z
+ 144:	91 81       	ldd	r25, Z+1	; 0x01
+ 146:	ce df       	rcall	.-100    	; 0xe4 <customWait>
+	PORTD = 0x00;
+ 148:	12 ba       	out	0x12, r1	; 18
+	customWait(waitState[*state], state);
+ 14a:	e8 81       	ld	r30, Y
+ 14c:	f9 81       	ldd	r31, Y+1	; 0x01
+ 14e:	ee 0f       	add	r30, r30
+ 150:	ff 1f       	adc	r31, r31
+ 152:	e0 50       	subi	r30, 0x00	; 0
+ 154:	ff 4f       	sbci	r31, 0xFF	; 255
+ 156:	be 01       	movw	r22, r28
+ 158:	80 81       	ld	r24, Z
+ 15a:	91 81       	ldd	r25, Z+1	; 0x01
+ 15c:	c3 df       	rcall	.-122    	; 0xe4 <customWait>
+	
+		
+	
+	
+}
+ 15e:	df 91       	pop	r29
+ 160:	cf 91       	pop	r28
+ 162:	08 95       	ret
+
+00000164 <main>:
 inputs:
 outputs:
 notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {	
- 120:	cf 93       	push	r28
- 122:	df 93       	push	r29
- 124:	00 d0       	rcall	.+0      	; 0x126 <main+0x6>
- 126:	cd b7       	in	r28, 0x3d	; 61
- 128:	de b7       	in	r29, 0x3e	; 62
+ 164:	cf 93       	push	r28
+ 166:	df 93       	push	r29
+ 168:	00 d0       	rcall	.+0      	; 0x16a <main+0x6>
+ 16a:	cd b7       	in	r28, 0x3d	; 61
+ 16c:	de b7       	in	r29, 0x3e	; 62
 	
 	DDRD = 0b11111111;
- 12a:	8f ef       	ldi	r24, 0xFF	; 255
- 12c:	81 bb       	out	0x11, r24	; 17
+ 16e:	8f ef       	ldi	r24, 0xFF	; 255
+ 170:	81 bb       	out	0x11, r24	; 17
 	PORTD = 0x03;
- 12e:	83 e0       	ldi	r24, 0x03	; 3
- 130:	82 bb       	out	0x12, r24	; 18
+ 172:	83 e0       	ldi	r24, 0x03	; 3
+ 174:	82 bb       	out	0x12, r24	; 18
 	int state = 0;	//state for switching shift direction.
- 132:	1a 82       	std	Y+2, r1	; 0x02
- 134:	19 82       	std	Y+1, r1	; 0x01
-		//ExecuteB2();
+ 176:	1a 82       	std	Y+2, r1	; 0x02
+ 178:	19 82       	std	Y+1, r1	; 0x01
 		//ExecuteB3();
 
 		//ExecuteB5();
 
-		ExecuteB4knightRider(&state);
- 136:	ce 01       	movw	r24, r28
- 138:	01 96       	adiw	r24, 0x01	; 1
- 13a:	cf df       	rcall	.-98     	; 0xda <ExecuteB4knightRider>
- 13c:	fc cf       	rjmp	.-8      	; 0x136 <main+0x16>
+		//ExecuteB4knightRider(&state);
+		ExecuteB6(&state);
+ 17a:	ce 01       	movw	r24, r28
+ 17c:	01 96       	adiw	r24, 0x01	; 1
+ 17e:	d4 df       	rcall	.-88     	; 0x128 <ExecuteB6>
+ 180:	fc cf       	rjmp	.-8      	; 0x17a <main+0x16>
 
-0000013e <_exit>:
- 13e:	f8 94       	cli
+00000182 <_exit>:
+ 182:	f8 94       	cli
 
-00000140 <__stop_program>:
- 140:	ff cf       	rjmp	.-2      	; 0x140 <__stop_program>
+00000184 <__stop_program>:
+ 184:	ff cf       	rjmp	.-2      	; 0x184 <__stop_program>

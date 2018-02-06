@@ -16,10 +16,12 @@ typedef struct{
 	}LOOPLIGHT_PATTERN;
 
 void wait(int);
-
+void customWait(int, int*);
+int CheckButton(int*);
 void ExecuteB2(void);
 void ExecuteB3(void);
 void ExecuteB5(void);
+void ExecuteB6(int*);
 void ExecuteB4knightRider(int*);
 
 

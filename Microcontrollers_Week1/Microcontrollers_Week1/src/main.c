@@ -8,11 +8,14 @@
 #include "main.h"
 #include <avr/io.h>
 #include <util/delay.h>
+#include <time.h>
 
 LOOPLIGHT_PATTERN pattern1[] = {{0x01, 50}, {0x02, 50}, {0x04, 50}, {0x08, 50}, {0x10, 50}, {0x20, 50}, {0x40, 50}, {0x80, 50}};
 LOOPLIGHT_PATTERN pattern2[] = {{0x18, 100}, {0x3c, 100}, {0x66, 100}, {0xc3, 100}, {0xc3, 100}, {0x66, 100}, {0x3c, 100}, {0x18, 100}, {0x00, 200},
 	{0x01, 100}, {0x05, 100}, {0x15, 100}, {0x55, 200}, {0xd5, 100}, {0xf5, 100}, {0xfd, 100}, {0xff, 200},
 	{0xc3, 100}, {0x66, 100}, {0x3c, 100}, {0x18, 100}, {0x00, 200}	};
+const int waitState[2] = {1000, 250};
+
 /******************************************************************/
 void wait( int ms )
 /* 
@@ -29,6 +32,27 @@ Author	:		dkroeske@gmail.com
 	for (int i=0; i<ms; i++)
 	{
 		_delay_ms( 1 );		// library function (max 30 ms at 8MHz)
+	}
+}
+
+/******************************************************************/
+void customWait( int ms, int* state )
+/* 
+short:			Busy wait number of millisecs
+inputs:			int ms (Number of millisecs to busy wait) int* state (Is button pressed)
+outputs:	
+notes:			Busy wait, not very accurate. Make sure (external)
+				clock value is set. This is used by _delay_ms inside
+				util/delay.h state == 0 (button is not pressed), state ==1 (button is pressed)
+Version :    	2.0
+Author	:		dkroeske@gmail.com
+Edited By:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	for (int i=0; i<ms; i++)
+	{
+		_delay_ms( 1 );		// library function (max 30 ms at 8MHz)
+		if (CheckButton(state) == 1) {break;} //checks if button is pressed
 	}
 }
 
@@ -74,10 +98,10 @@ Author	:		Lars Moesman & Rick Verstraten
 }
 void ExecuteB4knightRider(int* state)
 /*
-short:			Checks if button if pressed and activates animation
-inputs:			int *state(the state of the button press)
+short:			Executes KITT animation
+inputs:			int *state(direction of animation)
 outputs:
-notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+notes:			state = 0 top to bottom and state = 1 bottom to top
 Version :    	1.0
 Author	:		Lars Moesman & Rick Verstraten
 *******************************************************************/
@@ -115,6 +139,45 @@ Author	:		Lars Moesman & Rick Verstraten
 	
 }
 
+int CheckButton(int *state) {
+/*
+short:			Checks if button is pressed
+inputs:			int* state(state from button)
+outputs:		int 1 or 0.
+notes:			return 1 if button state is changed and 0 if not
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+	*******************************************************************/
+	DDRC = 0b11111110;
+	if(PINC == 0b00000001) {
+		*state = !*state;
+		return 1;
+	}
+	return 0;
+}
+
+void ExecuteB6(int *state)
+/*
+short:			Executes blinking led with certain waits
+inputs:			int* state(state from button)
+outputs:
+notes:			state 1 is button pressed, state 0 is button not pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	DDRD = 0b10000000;
+	
+	PORTD = 0x80;
+	customWait(waitState[*state], state);
+	PORTD = 0x00;
+	customWait(waitState[*state], state);
+	
+		
+	
+	
+}
+
 /******************************************************************/
 int main( void )
 /*
@@ -136,7 +199,8 @@ Version :    	DMK, Initial code
 
 		//ExecuteB5();
 
-		ExecuteB4knightRider(&state);
+		//ExecuteB4knightRider(&state);
+		ExecuteB6(&state);
 		
 		
 	}
