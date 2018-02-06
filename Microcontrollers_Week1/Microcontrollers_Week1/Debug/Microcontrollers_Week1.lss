@@ -155,7 +155,7 @@ Author	:		Lars Moesman & Rick Verstraten
   c4:	85 e5       	ldi	r24, 0x55	; 85
   c6:	90 e0       	ldi	r25, 0x00	; 0
   c8:	ea df       	rcall	.-44     	; 0x9e <wait>
-		PORTD <<= 1;
+		PORTD <<= 1;	//moves leds one place to the right
   ca:	82 b3       	in	r24, 0x12	; 18
   cc:	88 0f       	add	r24, r24
   ce:	82 bb       	out	0x12, r24	; 18
@@ -165,7 +165,7 @@ Author	:		Lars Moesman & Rick Verstraten
   d2:	85 e5       	ldi	r24, 0x55	; 85
   d4:	90 e0       	ldi	r25, 0x00	; 0
   d6:	e3 df       	rcall	.-58     	; 0x9e <wait>
-		PORTD >>= 1;
+		PORTD >>= 1;	//moves leds one place to the left.
   d8:	82 b3       	in	r24, 0x12	; 18
   da:	86 95       	lsr	r24
   dc:	82 bb       	out	0x12, r24	; 18
@@ -183,7 +183,7 @@ Version :    	DMK, Initial code
 	PORTD = 0x03;
   e4:	83 e0       	ldi	r24, 0x03	; 3
   e6:	82 bb       	out	0x12, r24	; 18
-	int state = 0;
+	int state = 0;	//state for switching shift direction.
   e8:	d0 e0       	ldi	r29, 0x00	; 0
   ea:	c0 e0       	ldi	r28, 0x00	; 0
 	while (1)
@@ -191,14 +191,14 @@ Version :    	DMK, Initial code
 		//ExecuteB2();
 		//ExecuteB3();
 		ExecuteB4knightRider(state);
-		if(PORTD == 0xC0){state = 1;}
+		if(PORTD == 0xC0){state = 1;}	//change state at the beginning and the end of PORTD
   ec:	ee 24       	eor	r14, r14
   ee:	e3 94       	inc	r14
   f0:	f1 2c       	mov	r15, r1
 		if(PORTD == 0x03){state = 0;}
   f2:	00 e0       	ldi	r16, 0x00	; 0
   f4:	10 e0       	ldi	r17, 0x00	; 0
-	int state = 0;
+	int state = 0;	//state for switching shift direction.
 	while (1)
 	{
 		//ExecuteB2();
@@ -207,7 +207,7 @@ Version :    	DMK, Initial code
   f6:	8d 2f       	mov	r24, r29
   f8:	9c 2f       	mov	r25, r28
   fa:	e2 df       	rcall	.-60     	; 0xc0 <ExecuteB4knightRider>
-		if(PORTD == 0xC0){state = 1;}
+		if(PORTD == 0xC0){state = 1;}	//change state at the beginning and the end of PORTD
   fc:	82 b3       	in	r24, 0x12	; 18
   fe:	80 3c       	cpi	r24, 0xC0	; 192
  100:	11 f4       	brne	.+4      	; 0x106 <main+0x26>

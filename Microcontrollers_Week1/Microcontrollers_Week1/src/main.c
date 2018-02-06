@@ -80,10 +80,10 @@ Author	:		Lars Moesman & Rick Verstraten
 {
 	if(state == 0){
 		wait(85);			
-		PORTD <<= 1;
+		PORTD <<= 1;	//moves leds one place to the right
 	}else{
 		wait(85);
-		PORTD >>= 1;
+		PORTD >>= 1;	//moves leds one place to the left.
 	}
 }
 
@@ -100,13 +100,13 @@ Version :    	DMK, Initial code
 	
 	DDRD = 0b11111111;
 	PORTD = 0x03;
-	int state = 0;
+	int state = 0;	//state for switching shift direction.
 	while (1)
 	{
 		//ExecuteB2();
 		//ExecuteB3();
 		ExecuteB4knightRider(state);
-		if(PORTD == 0xC0){state = 1;}
+		if(PORTD == 0xC0){state = 1;}	//change state at the beginning and the end of PORTD
 		if(PORTD == 0x03){state = 0;}
 		
 	}
