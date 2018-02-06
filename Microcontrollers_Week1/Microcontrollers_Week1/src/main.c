@@ -40,15 +40,15 @@ Author:			Lars Moesman & Rick Verstraten
 *******************************************************************/
 {
 	DDRD = 0b11111111;	//all ports of D are output now
-	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000
+	PORTD = 0x80;		//pin 6 and 7 are turned on 0b11000000
 	wait(500);
-	PORTD = 0x00;		//all pins are turned off
+	PORTD = 0x40;		//all pins are turned off
 	wait(500);
 }
 
 
 /******************************************************************/
-void ExecuteB3(int *state)
+void ExecuteB3()
 /* 
 short:			Checks if button if pressed and activates animation
 inputs:			int *state(the state of the button press)
@@ -60,12 +60,11 @@ Author	:		Lars Moesman & Rick Verstraten
 {
 	DDRD = 0b10000000;
 	DDRC = 0b11111110;
-	if(PINC == 0b00000001 || *state == 1) {
+	if(PINC == 0b00000001) {
 		PORTD = 0x80;
 		wait(500);
 		PORTD = 0x00;
 		wait(500);
-		*state = 1;
 	}
 	
 }
@@ -80,12 +79,10 @@ notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {	
-	int state = 0;
-	
 	while (1)
 	{
 		//ExecuteB2();
-		//ExecuteB3(&state);
+		//ExecuteB3();
 	}
 
 	return 1;

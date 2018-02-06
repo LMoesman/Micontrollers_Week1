@@ -3,59 +3,31 @@ Microcontrollers_Week1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-<<<<<<< HEAD
-  0 .data         00000000  00800100  00800100  00000134  2**0
+  0 .data         00000000  00800100  00800100  000000f8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000e0  00000000  00000000  00000054  2**1
+  1 .text         000000a4  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  00000134  2**0
-=======
-  0 .data         00000000  00800100  00800100  0000016e  2**0
-                  CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000011a  00000000  00000000  00000054  2**1
-                  CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  0000016e  2**0
->>>>>>> B.3
+  2 .comment      00000030  00000000  00000000  000000f8  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001a0  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000128  2**2
                   CONTENTS, READONLY
-<<<<<<< HEAD
-  4 .debug_aranges 00000030  00000000  00000000  000001a0  2**0
+  4 .debug_aranges 00000038  00000000  00000000  00000164  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000923  00000000  00000000  000001d0  2**0
+  5 .debug_info   00000963  00000000  00000000  0000019c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000856  00000000  00000000  00000af3  2**0
+  6 .debug_abbrev 0000084b  00000000  00000000  00000aff  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000479  00000000  00000000  00001349  2**0
+  7 .debug_line   000004aa  00000000  00000000  0000134a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000044  00000000  00000000  000017c4  2**2
+  8 .debug_frame  00000054  00000000  00000000  000017f4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000072cb  00000000  00000000  00001808  2**0
+  9 .debug_str    000072d5  00000000  00000000  00001848  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000006a  00000000  00000000  00008ad3  2**0
+ 10 .debug_loc    0000006a  00000000  00000000  00008b1d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000020  00000000  00000000  00008b3d  2**0
+ 11 .debug_ranges 00000028  00000000  00000000  00008b87  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  00008b5d  2**0
-=======
-  4 .debug_aranges 00000030  00000000  00000000  000001dc  2**0
-                  CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000953  00000000  00000000  0000020c  2**0
-                  CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000874  00000000  00000000  00000b5f  2**0
-                  CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000004a4  00000000  00000000  000013d3  2**0
-                  CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000060  00000000  00000000  00001878  2**2
-                  CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000072c2  00000000  00000000  000018d8  2**0
-                  CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000117  00000000  00000000  00008b9a  2**0
-                  CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000020  00000000  00000000  00008cb1  2**0
-                  CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  00008cd1  2**0
->>>>>>> B.3
+ 12 .debug_macro  00002a56  00000000  00000000  00008baf  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -139,167 +111,23 @@ Disassembly of section .text:
   92:	d0 e1       	ldi	r29, 0x10	; 16
   94:	de bf       	out	0x3e, r29	; 62
   96:	cd bf       	out	0x3d, r28	; 61
-<<<<<<< HEAD
-  98:	1f d0       	rcall	.+62     	; 0xd8 <main>
-  9a:	20 c0       	rjmp	.+64     	; 0xdc <_exit>
-=======
-  98:	33 d0       	rcall	.+102    	; 0x100 <main>
-  9a:	3d c0       	rjmp	.+122    	; 0x116 <_exit>
->>>>>>> B.3
+  98:	02 d0       	rcall	.+4      	; 0x9e <main>
+  9a:	02 c0       	rjmp	.+4      	; 0xa0 <_exit>
 
 0000009c <__bad_interrupt>:
   9c:	b1 cf       	rjmp	.-158    	; 0x0 <__vectors>
 
-0000009e <wait>:
-				util/delay.h
-Version :    	DMK, Initial code
-Author	:		dkroeske@gmail.com
-*******************************************************************/
-{
-	for (int i=0; i<ms; i++)
-  9e:	18 16       	cp	r1, r24
-  a0:	19 06       	cpc	r1, r25
-  a2:	6c f4       	brge	.+26     	; 0xbe <wait+0x20>
-  a4:	20 e0       	ldi	r18, 0x00	; 0
-  a6:	30 e0       	ldi	r19, 0x00	; 0
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
-  a8:	ef ec       	ldi	r30, 0xCF	; 207
-  aa:	f7 e0       	ldi	r31, 0x07	; 7
-  ac:	31 97       	sbiw	r30, 0x01	; 1
-  ae:	f1 f7       	brne	.-4      	; 0xac <wait+0xe>
-  b0:	00 c0       	rjmp	.+0      	; 0xb2 <wait+0x14>
-  b2:	00 00       	nop
-  b4:	2f 5f       	subi	r18, 0xFF	; 255
-  b6:	3f 4f       	sbci	r19, 0xFF	; 255
-  b8:	82 17       	cp	r24, r18
-  ba:	93 07       	cpc	r25, r19
-  bc:	a9 f7       	brne	.-22     	; 0xa8 <wait+0xa>
-  be:	08 95       	ret
-
-<<<<<<< HEAD
-000000c0 <ExecuteB2>:
-notes:			
-Version :    	V1.0
-Author:			Lars Moesman & Rick Verstraten
-*******************************************************************/
-{
-	DDRD = 0b11111111;	//all ports of D are output now
-  c0:	8f ef       	ldi	r24, 0xFF	; 255
-  c2:	81 bb       	out	0x11, r24	; 17
-	PORTD = 0xC0;		//pin 6 and 7 are turned on 0b11000000  
-  c4:	80 ec       	ldi	r24, 0xC0	; 192
-  c6:	82 bb       	out	0x12, r24	; 18
-	wait(500);
-  c8:	84 ef       	ldi	r24, 0xF4	; 244
-  ca:	91 e0       	ldi	r25, 0x01	; 1
-  cc:	e8 df       	rcall	.-48     	; 0x9e <wait>
-	PORTD = 0x00;		//all pins are turned off
-  ce:	12 ba       	out	0x12, r1	; 18
-	wait(500);
-  d0:	84 ef       	ldi	r24, 0xF4	; 244
-  d2:	91 e0       	ldi	r25, 0x01	; 1
-  d4:	e4 cf       	rjmp	.-56     	; 0x9e <wait>
-  d6:	08 95       	ret
-
-000000d8 <main>:
-*******************************************************************/
-{
-	
-	while (1)
-	{
-		ExecuteB2();
-  d8:	f3 df       	rcall	.-26     	; 0xc0 <ExecuteB2>
-  da:	fe cf       	rjmp	.-4      	; 0xd8 <main>
-
-000000dc <_exit>:
-  dc:	f8 94       	cli
-
-000000de <__stop_program>:
-  de:	ff cf       	rjmp	.-2      	; 0xde <__stop_program>
-=======
-000000c0 <ExecuteB3>:
-				clock value is set. This is used by _delay_ms inside
-				util/delay.h
-Version :    	DMK, Initial code
-Author	:		dkroeske@gmail.com
-*******************************************************************/
-{
-  c0:	cf 93       	push	r28
-  c2:	df 93       	push	r29
-	DDRD = 0b10000000;
-  c4:	20 e8       	ldi	r18, 0x80	; 128
-  c6:	21 bb       	out	0x11, r18	; 17
-	DDRC = 0b11111110;
-  c8:	2e ef       	ldi	r18, 0xFE	; 254
-  ca:	24 bb       	out	0x14, r18	; 20
-	if(PINC == 0b00000001 || *state == 1) {
-  cc:	23 b3       	in	r18, 0x13	; 19
-  ce:	21 30       	cpi	r18, 0x01	; 1
-  d0:	31 f0       	breq	.+12     	; 0xde <ExecuteB3+0x1e>
-  d2:	fc 01       	movw	r30, r24
-  d4:	20 81       	ld	r18, Z
-  d6:	31 81       	ldd	r19, Z+1	; 0x01
-  d8:	21 30       	cpi	r18, 0x01	; 1
-  da:	31 05       	cpc	r19, r1
-  dc:	71 f4       	brne	.+28     	; 0xfa <ExecuteB3+0x3a>
-  de:	ec 01       	movw	r28, r24
-		PORTD = 0x80;
-  e0:	80 e8       	ldi	r24, 0x80	; 128
-  e2:	82 bb       	out	0x12, r24	; 18
-		wait(500);
-  e4:	84 ef       	ldi	r24, 0xF4	; 244
-  e6:	91 e0       	ldi	r25, 0x01	; 1
-  e8:	da df       	rcall	.-76     	; 0x9e <wait>
-		PORTD = 0x00;
-  ea:	12 ba       	out	0x12, r1	; 18
-		wait(500);
-  ec:	84 ef       	ldi	r24, 0xF4	; 244
-  ee:	91 e0       	ldi	r25, 0x01	; 1
-  f0:	d6 df       	rcall	.-84     	; 0x9e <wait>
-		*state = 1;
-  f2:	81 e0       	ldi	r24, 0x01	; 1
-  f4:	90 e0       	ldi	r25, 0x00	; 0
-  f6:	99 83       	std	Y+1, r25	; 0x01
-  f8:	88 83       	st	Y, r24
-	}
-	
-}
-  fa:	df 91       	pop	r29
-  fc:	cf 91       	pop	r28
-  fe:	08 95       	ret
-
-00000100 <main>:
+0000009e <main>:
 inputs:
 outputs:
 notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
-{
- 100:	cf 93       	push	r28
- 102:	df 93       	push	r29
- 104:	00 d0       	rcall	.+0      	; 0x106 <main+0x6>
- 106:	cd b7       	in	r28, 0x3d	; 61
- 108:	de b7       	in	r29, 0x3e	; 62
-	int state = 0;
- 10a:	1a 82       	std	Y+2, r1	; 0x02
- 10c:	19 82       	std	Y+1, r1	; 0x01
-	
-	while (1)
-	{
-		ExecuteB3(&state);
- 10e:	ce 01       	movw	r24, r28
- 110:	01 96       	adiw	r24, 0x01	; 1
- 112:	d6 df       	rcall	.-84     	; 0xc0 <ExecuteB3>
- 114:	fc cf       	rjmp	.-8      	; 0x10e <main+0xe>
+{	
+  9e:	ff cf       	rjmp	.-2      	; 0x9e <main>
 
-00000116 <_exit>:
- 116:	f8 94       	cli
+000000a0 <_exit>:
+  a0:	f8 94       	cli
 
-00000118 <__stop_program>:
- 118:	ff cf       	rjmp	.-2      	; 0x118 <__stop_program>
->>>>>>> B.3
+000000a2 <__stop_program>:
+  a2:	ff cf       	rjmp	.-2      	; 0xa2 <__stop_program>
