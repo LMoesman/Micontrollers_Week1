@@ -16,9 +16,11 @@ typedef struct{
 	}LOOPLIGHT_PATTERN;
 
 void wait(int);
+
 void ExecuteB2(void);
 void ExecuteB3(void);
 void ExecuteB5(void);
+void ExecuteB4knightRider(int*);
 
 
 #endif /* MAIN_H_ */

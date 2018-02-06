@@ -3,31 +3,31 @@ Microcontrollers_Week1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000042  00800100  00000112  00000186  2**0
+  0 .data         00000000  00800100  00800100  00000196  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00000112  00000000  00000000  00000074  2**1
+  1 .text         00000142  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000001c8  2**0
+  2 .comment      00000030  00000000  00000000  00000196  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001f8  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001c8  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000040  00000000  00000000  00000234  2**0
+  4 .debug_aranges 00000048  00000000  00000000  00000204  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000a28  00000000  00000000  00000274  2**0
+  5 .debug_info   00000aa0  00000000  00000000  0000024c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000008a8  00000000  00000000  00000c9c  2**0
+  6 .debug_abbrev 000008cf  00000000  00000000  00000cec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000004ef  00000000  00000000  00001544  2**0
+  7 .debug_line   0000055a  00000000  00000000  000015bb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000078  00000000  00000000  00001a34  2**2
+  8 .debug_frame  000000a4  00000000  00000000  00001b18  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    00007308  00000000  00000000  00001aac  2**0
+  9 .debug_str    00007323  00000000  00000000  00001bbc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000000c7  00000000  00000000  00008db4  2**0
+ 10 .debug_loc    00000174  00000000  00000000  00008edf  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000030  00000000  00000000  00008e7b  2**0
+ 11 .debug_ranges 00000038  00000000  00000000  00009053  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  00008eab  2**0
+ 12 .debug_macro  00002a56  00000000  00000000  0000908b  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -116,29 +116,29 @@ Disassembly of section .text:
   98:	11 e0       	ldi	r17, 0x01	; 1
   9a:	a0 e0       	ldi	r26, 0x00	; 0
   9c:	b1 e0       	ldi	r27, 0x01	; 1
-  9e:	e2 e1       	ldi	r30, 0x12	; 18
+  9e:	e2 e4       	ldi	r30, 0x42	; 66
   a0:	f1 e0       	ldi	r31, 0x01	; 1
   a2:	00 e0       	ldi	r16, 0x00	; 0
   a4:	0b bf       	out	0x3b, r16	; 59
   a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
   a8:	07 90       	elpm	r0, Z+
   aa:	0d 92       	st	X+, r0
-  ac:	a2 34       	cpi	r26, 0x42	; 66
+  ac:	a0 30       	cpi	r26, 0x00	; 0
   ae:	b1 07       	cpc	r27, r17
   b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
-  b2:	2b d0       	rcall	.+86     	; 0x10a <main>
-  b4:	2c c0       	rjmp	.+88     	; 0x10e <_exit>
+  b2:	36 d0       	rcall	.+108    	; 0x120 <main>
+  b4:	44 c0       	rjmp	.+136    	; 0x13e <_exit>
 
 000000b6 <__bad_interrupt>:
   b6:	a4 cf       	rjmp	.-184    	; 0x0 <__vectors>
 
 000000b8 <wait>:
-	DDRC = 0b11111110;
-	if(PINC == 0b00000001) {
-		PORTD = 0x80;
-		wait(500);
-		PORTD = 0x00;
-		wait(500);
+	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
+		PORTD = pattern2[index].data;
+		wait(pattern2[index].wait);
+	}
+	
+}
   b8:	18 16       	cp	r1, r24
   ba:	19 06       	cpc	r1, r25
   bc:	6c f4       	brge	.+26     	; 0xd8 <wait+0x20>
@@ -157,68 +157,78 @@ Disassembly of section .text:
   d6:	a9 f7       	brne	.-22     	; 0xc2 <wait+0xa>
   d8:	08 95       	ret
 
-000000da <ExecuteB5>:
-outputs:
-notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
-Version :    	1.0
-Author	:		Lars Moesman & Rick Verstraten
-*******************************************************************/
-{
-  da:	0f 93       	push	r16
-  dc:	1f 93       	push	r17
-  de:	cf 93       	push	r28
-  e0:	df 93       	push	r29
-	DDRD = 0b11111111;
-  e2:	8f ef       	ldi	r24, 0xFF	; 255
-  e4:	81 bb       	out	0x11, r24	; 17
-  e6:	c0 e0       	ldi	r28, 0x00	; 0
-  e8:	d1 e0       	ldi	r29, 0x01	; 1
-  ea:	02 e4       	ldi	r16, 0x42	; 66
-  ec:	11 e0       	ldi	r17, 0x01	; 1
-	int index;
-	
-	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
-		PORTD = pattern2[index].data;
-  ee:	88 81       	ld	r24, Y
-  f0:	82 bb       	out	0x12, r24	; 18
-		wait(pattern2[index].wait);
-  f2:	89 81       	ldd	r24, Y+1	; 0x01
-  f4:	9a 81       	ldd	r25, Y+2	; 0x02
-  f6:	e0 df       	rcall	.-64     	; 0xb8 <wait>
-  f8:	23 96       	adiw	r28, 0x03	; 3
-*******************************************************************/
-{
-	DDRD = 0b11111111;
-	int index;
-	
-	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
-  fa:	c0 17       	cp	r28, r16
-  fc:	d1 07       	cpc	r29, r17
-  fe:	b9 f7       	brne	.-18     	; 0xee <ExecuteB5+0x14>
-		PORTD = pattern2[index].data;
-		wait(pattern2[index].wait);
-	}
-	
-	
-}
- 100:	df 91       	pop	r29
- 102:	cf 91       	pop	r28
- 104:	1f 91       	pop	r17
- 106:	0f 91       	pop	r16
- 108:	08 95       	ret
+000000da <ExecuteB4knightRider>:
+  da:	cf 93       	push	r28
+  dc:	df 93       	push	r29
+  de:	ec 01       	movw	r28, r24
+  e0:	88 81       	ld	r24, Y
+  e2:	99 81       	ldd	r25, Y+1	; 0x01
+  e4:	89 2b       	or	r24, r25
+  e6:	39 f4       	brne	.+14     	; 0xf6 <ExecuteB4knightRider+0x1c>
+  e8:	85 e5       	ldi	r24, 0x55	; 85
+  ea:	90 e0       	ldi	r25, 0x00	; 0
+  ec:	e5 df       	rcall	.-54     	; 0xb8 <wait>
+  ee:	82 b3       	in	r24, 0x12	; 18
+  f0:	88 0f       	add	r24, r24
+  f2:	82 bb       	out	0x12, r24	; 18
+  f4:	06 c0       	rjmp	.+12     	; 0x102 <ExecuteB4knightRider+0x28>
+  f6:	85 e5       	ldi	r24, 0x55	; 85
+  f8:	90 e0       	ldi	r25, 0x00	; 0
+  fa:	de df       	rcall	.-68     	; 0xb8 <wait>
+  fc:	82 b3       	in	r24, 0x12	; 18
+  fe:	86 95       	lsr	r24
+ 100:	82 bb       	out	0x12, r24	; 18
+ 102:	82 b3       	in	r24, 0x12	; 18
+ 104:	80 3c       	cpi	r24, 0xC0	; 192
+ 106:	21 f4       	brne	.+8      	; 0x110 <ExecuteB4knightRider+0x36>
+ 108:	81 e0       	ldi	r24, 0x01	; 1
+ 10a:	90 e0       	ldi	r25, 0x00	; 0
+ 10c:	99 83       	std	Y+1, r25	; 0x01
+ 10e:	88 83       	st	Y, r24
+ 110:	82 b3       	in	r24, 0x12	; 18
+ 112:	83 30       	cpi	r24, 0x03	; 3
+ 114:	11 f4       	brne	.+4      	; 0x11a <ExecuteB4knightRider+0x40>
+ 116:	19 82       	std	Y+1, r1	; 0x01
+ 118:	18 82       	st	Y, r1
+ 11a:	df 91       	pop	r29
+ 11c:	cf 91       	pop	r28
+ 11e:	08 95       	ret
 
-0000010a <main>:
+00000120 <main>:
+inputs:
+outputs:
+notes:			Looping forever, flipping bits on PORTD
+Version :    	DMK, Initial code
+*******************************************************************/
 {	
-	while (1)
-	{
+ 120:	cf 93       	push	r28
+ 122:	df 93       	push	r29
+ 124:	00 d0       	rcall	.+0      	; 0x126 <main+0x6>
+ 126:	cd b7       	in	r28, 0x3d	; 61
+ 128:	de b7       	in	r29, 0x3e	; 62
+	
+	DDRD = 0b11111111;
+ 12a:	8f ef       	ldi	r24, 0xFF	; 255
+ 12c:	81 bb       	out	0x11, r24	; 17
+	PORTD = 0x03;
+ 12e:	83 e0       	ldi	r24, 0x03	; 3
+ 130:	82 bb       	out	0x12, r24	; 18
+	int state = 0;	//state for switching shift direction.
+ 132:	1a 82       	std	Y+2, r1	; 0x02
+ 134:	19 82       	std	Y+1, r1	; 0x01
 		//ExecuteB2();
 		//ExecuteB3();
-		ExecuteB5();
- 10a:	e7 df       	rcall	.-50     	; 0xda <ExecuteB5>
- 10c:	fe cf       	rjmp	.-4      	; 0x10a <main>
 
-0000010e <_exit>:
- 10e:	f8 94       	cli
+		//ExecuteB5();
 
-00000110 <__stop_program>:
- 110:	ff cf       	rjmp	.-2      	; 0x110 <__stop_program>
+		ExecuteB4knightRider(&state);
+ 136:	ce 01       	movw	r24, r28
+ 138:	01 96       	adiw	r24, 0x01	; 1
+ 13a:	cf df       	rcall	.-98     	; 0xda <ExecuteB4knightRider>
+ 13c:	fc cf       	rjmp	.-8      	; 0x136 <main+0x16>
+
+0000013e <_exit>:
+ 13e:	f8 94       	cli
+
+00000140 <__stop_program>:
+ 140:	ff cf       	rjmp	.-2      	; 0x140 <__stop_program>

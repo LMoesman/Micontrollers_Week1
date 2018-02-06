@@ -72,6 +72,26 @@ Author	:		Lars Moesman & Rick Verstraten
 	}
 	
 }
+void ExecuteB4knightRider(int* state)
+/*
+short:			Checks if button if pressed and activates animation
+inputs:			int *state(the state of the button press)
+outputs:
+notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	if(*state == 0){
+		wait(85);			
+		PORTD <<= 1;	//moves leds one place to the right
+	}else{
+		wait(85);
+		PORTD >>= 1;	//moves leds one place to the left.
+	}
+	if(PORTD == 0xC0){*state = 1;}	//change state at the beginning and the end of PORTD
+	if(PORTD == 0x03){*state = 0;}
+}
 
 
 /******************************************************************/
@@ -105,13 +125,22 @@ notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {	
+	
+	DDRD = 0b11111111;
+	PORTD = 0x03;
+	int state = 0;	//state for switching shift direction.
 	while (1)
 	{
 		//ExecuteB2();
 		//ExecuteB3();
-		//ExecuteB5();
-	}
 
+		//ExecuteB5();
+
+		ExecuteB4knightRider(&state);
+		
+		
+	}
+	
 	return 1;
 }
 
