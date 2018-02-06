@@ -55,9 +55,9 @@ Author:			Lars Moesman & Rick Verstraten
 void ExecuteB3()
 /* 
 short:			Checks if button if pressed and activates animation
-inputs:			int *state(the state of the button press)
+inputs:			
 outputs:		
-notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+notes:			
 Version :    	1.0
 Author	:		Lars Moesman & Rick Verstraten
 *******************************************************************/
@@ -77,10 +77,10 @@ Author	:		Lars Moesman & Rick Verstraten
 /******************************************************************/
 void ExecuteB5()
 /*
-short:			Checks if button if pressed and activates animation
-inputs:			int *state(the state of the button press)
+short:			Executes animation from one of the pattern arrays defined in this file
+inputs:			
 outputs:
-notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+notes:			you can choose from pattern1(looping) or pattern2(custom animation)
 Version :    	1.0
 Author	:		Lars Moesman & Rick Verstraten
 *******************************************************************/
@@ -109,7 +109,7 @@ Version :    	DMK, Initial code
 	{
 		//ExecuteB2();
 		//ExecuteB3();
-		ExecuteB5();
+		//ExecuteB5();
 	}
 
 	return 1;
