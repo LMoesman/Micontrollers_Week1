@@ -9,6 +9,10 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
+LOOPLIGHT_PATTERN pattern1[] = {{0x01, 50}, {0x02, 50}, {0x04, 50}, {0x08, 50}, {0x10, 50}, {0x20, 50}, {0x40, 50}, {0x80, 50}};
+LOOPLIGHT_PATTERN pattern2[] = {{0x18, 100}, {0x3c, 100}, {0x66, 100}, {0xc3, 100}, {0xc3, 100}, {0x66, 100}, {0x3c, 100}, {0x18, 100}, {0x00, 200},
+	{0x01, 100}, {0x05, 100}, {0x15, 100}, {0x55, 200}, {0xd5, 100}, {0xf5, 100}, {0xfd, 100}, {0xff, 200},
+	{0xc3, 100}, {0x66, 100}, {0x3c, 100}, {0x18, 100}, {0x00, 200}	};
 /******************************************************************/
 void wait( int ms )
 /* 
@@ -69,6 +73,28 @@ Author	:		Lars Moesman & Rick Verstraten
 	
 }
 
+
+/******************************************************************/
+void ExecuteB5()
+/*
+short:			Checks if button if pressed and activates animation
+inputs:			int *state(the state of the button press)
+outputs:
+notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	DDRD = 0b11111111;
+	int index;
+	
+	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
+		PORTD = pattern2[index].data;
+		wait(pattern2[index].wait);
+	}
+	
+}
+
 /******************************************************************/
 int main( void )
 /*
@@ -83,6 +109,7 @@ Version :    	DMK, Initial code
 	{
 		//ExecuteB2();
 		//ExecuteB3();
+		ExecuteB5();
 	}
 
 	return 1;
