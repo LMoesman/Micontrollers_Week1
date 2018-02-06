@@ -3,31 +3,31 @@ Microcontrollers_Week1.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000000  00800100  00800100  000000f8  2**0
+  0 .data         00000000  00800100  00800100  0000016a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000000a4  00000000  00000000  00000054  2**1
+  1 .text         00000116  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .comment      00000030  00000000  00000000  000000f8  2**0
+  2 .comment      00000030  00000000  00000000  0000016a  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000128  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000019c  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000038  00000000  00000000  00000164  2**0
+  4 .debug_aranges 00000040  00000000  00000000  000001d8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00000963  00000000  00000000  0000019c  2**0
+  5 .debug_info   000009d4  00000000  00000000  00000218  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 0000084b  00000000  00000000  00000aff  2**0
+  6 .debug_abbrev 00000874  00000000  00000000  00000bec  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000004aa  00000000  00000000  0000134a  2**0
+  7 .debug_line   00000509  00000000  00000000  00001460  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000054  00000000  00000000  000017f4  2**2
+  8 .debug_frame  00000064  00000000  00000000  0000196c  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    000072d5  00000000  00000000  00001848  2**0
+  9 .debug_str    000072f0  00000000  00000000  000019d0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    0000006a  00000000  00000000  00008b1d  2**0
+ 10 .debug_loc    000000e2  00000000  00000000  00008cc0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000028  00000000  00000000  00008b87  2**0
+ 11 .debug_ranges 00000030  00000000  00000000  00008da2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00002a56  00000000  00000000  00008baf  2**0
+ 12 .debug_macro  00002a56  00000000  00000000  00008dd2  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -111,23 +111,118 @@ Disassembly of section .text:
   92:	d0 e1       	ldi	r29, 0x10	; 16
   94:	de bf       	out	0x3e, r29	; 62
   96:	cd bf       	out	0x3d, r28	; 61
-  98:	02 d0       	rcall	.+4      	; 0x9e <main>
-  9a:	02 c0       	rjmp	.+4      	; 0xa0 <_exit>
+  98:	23 d0       	rcall	.+70     	; 0xe0 <main>
+  9a:	3b c0       	rjmp	.+118    	; 0x112 <_exit>
 
 0000009c <__bad_interrupt>:
   9c:	b1 cf       	rjmp	.-158    	; 0x0 <__vectors>
 
-0000009e <main>:
-inputs:
-outputs:
+0000009e <wait>:
+	DDRC = 0b11111110;
+	if(PINC == 0b00000001) {
+		PORTD = 0x80;
+		wait(500);
+		PORTD = 0x00;
+		wait(500);
+  9e:	18 16       	cp	r1, r24
+  a0:	19 06       	cpc	r1, r25
+  a2:	6c f4       	brge	.+26     	; 0xbe <wait+0x20>
+  a4:	20 e0       	ldi	r18, 0x00	; 0
+  a6:	30 e0       	ldi	r19, 0x00	; 0
+  a8:	ef ec       	ldi	r30, 0xCF	; 207
+  aa:	f7 e0       	ldi	r31, 0x07	; 7
+  ac:	31 97       	sbiw	r30, 0x01	; 1
+  ae:	f1 f7       	brne	.-4      	; 0xac <wait+0xe>
+  b0:	00 c0       	rjmp	.+0      	; 0xb2 <wait+0x14>
+  b2:	00 00       	nop
+  b4:	2f 5f       	subi	r18, 0xFF	; 255
+  b6:	3f 4f       	sbci	r19, 0xFF	; 255
+  b8:	82 17       	cp	r24, r18
+  ba:	93 07       	cpc	r25, r19
+  bc:	a9 f7       	brne	.-22     	; 0xa8 <wait+0xa>
+  be:	08 95       	ret
+
+000000c0 <ExecuteB4knightRider>:
+notes:			state = 0 when button is not pressed yet and state = 1 when the button is pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	if(state == 0){
+  c0:	89 2b       	or	r24, r25
+  c2:	39 f4       	brne	.+14     	; 0xd2 <ExecuteB4knightRider+0x12>
+		wait(85);			
+  c4:	85 e5       	ldi	r24, 0x55	; 85
+  c6:	90 e0       	ldi	r25, 0x00	; 0
+  c8:	ea df       	rcall	.-44     	; 0x9e <wait>
+		PORTD <<= 1;
+  ca:	82 b3       	in	r24, 0x12	; 18
+  cc:	88 0f       	add	r24, r24
+  ce:	82 bb       	out	0x12, r24	; 18
+  d0:	08 95       	ret
+	}else{
+		wait(85);
+  d2:	85 e5       	ldi	r24, 0x55	; 85
+  d4:	90 e0       	ldi	r25, 0x00	; 0
+  d6:	e3 df       	rcall	.-58     	; 0x9e <wait>
+		PORTD >>= 1;
+  d8:	82 b3       	in	r24, 0x12	; 18
+  da:	86 95       	lsr	r24
+  dc:	82 bb       	out	0x12, r24	; 18
+  de:	08 95       	ret
+
+000000e0 <main>:
 notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {	
-  9e:	ff cf       	rjmp	.-2      	; 0x9e <main>
+	
+	DDRD = 0b11111111;
+  e0:	8f ef       	ldi	r24, 0xFF	; 255
+  e2:	81 bb       	out	0x11, r24	; 17
+	PORTD = 0x03;
+  e4:	83 e0       	ldi	r24, 0x03	; 3
+  e6:	82 bb       	out	0x12, r24	; 18
+	int state = 0;
+  e8:	d0 e0       	ldi	r29, 0x00	; 0
+  ea:	c0 e0       	ldi	r28, 0x00	; 0
+	while (1)
+	{
+		//ExecuteB2();
+		//ExecuteB3();
+		ExecuteB4knightRider(state);
+		if(PORTD == 0xC0){state = 1;}
+  ec:	ee 24       	eor	r14, r14
+  ee:	e3 94       	inc	r14
+  f0:	f1 2c       	mov	r15, r1
+		if(PORTD == 0x03){state = 0;}
+  f2:	00 e0       	ldi	r16, 0x00	; 0
+  f4:	10 e0       	ldi	r17, 0x00	; 0
+	int state = 0;
+	while (1)
+	{
+		//ExecuteB2();
+		//ExecuteB3();
+		ExecuteB4knightRider(state);
+  f6:	8d 2f       	mov	r24, r29
+  f8:	9c 2f       	mov	r25, r28
+  fa:	e2 df       	rcall	.-60     	; 0xc0 <ExecuteB4knightRider>
+		if(PORTD == 0xC0){state = 1;}
+  fc:	82 b3       	in	r24, 0x12	; 18
+  fe:	80 3c       	cpi	r24, 0xC0	; 192
+ 100:	11 f4       	brne	.+4      	; 0x106 <main+0x26>
+ 102:	de 2d       	mov	r29, r14
+ 104:	cf 2d       	mov	r28, r15
+		if(PORTD == 0x03){state = 0;}
+ 106:	82 b3       	in	r24, 0x12	; 18
+ 108:	83 30       	cpi	r24, 0x03	; 3
+ 10a:	a9 f7       	brne	.-22     	; 0xf6 <main+0x16>
+ 10c:	d0 2f       	mov	r29, r16
+ 10e:	c1 2f       	mov	r28, r17
+ 110:	f2 cf       	rjmp	.-28     	; 0xf6 <main+0x16>
 
-000000a0 <_exit>:
-  a0:	f8 94       	cli
+00000112 <_exit>:
+ 112:	f8 94       	cli
 
-000000a2 <__stop_program>:
-  a2:	ff cf       	rjmp	.-2      	; 0xa2 <__stop_program>
+00000114 <__stop_program>:
+ 114:	ff cf       	rjmp	.-2      	; 0x114 <__stop_program>

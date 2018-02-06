@@ -13,6 +13,7 @@
 void wait(int);
 void ExecuteB2();
 void ExecuteB3();
+void ExecuteB4knightRider(int);
 
 
 #endif /* MAIN_H_ */
