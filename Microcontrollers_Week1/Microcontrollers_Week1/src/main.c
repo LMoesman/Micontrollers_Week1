@@ -133,7 +133,7 @@ Author	:		Lars Moesman & Rick Verstraten
 	int index;
 	
 	for(index = 0;index < (sizeof(pattern2) / sizeof(pattern2[0]));index++) {
-		PORTD = pattern2[index].data;
+		PORTD = pattern2[index].data;	//Sets pattern address from Array to port
 		wait(pattern2[index].wait);
 	}
 	
@@ -150,10 +150,24 @@ Author	:		Lars Moesman & Rick Verstraten
 	*******************************************************************/
 	DDRC = 0b11111110;
 	if(PINC == 0b00000001) {
-		*state = !*state;
+		*state = !*state;		//set state to 0 or 1 (boolean)
 		return 1;
 	}
 	return 0;
+}
+
+int TranslatePins(int pin) {
+/*
+short:			Makes address for controlling the port or ddrd
+inputs:			int pin(which pin has to be turned on or set to output)
+outputs:		int translation(address for controlling port or ddrd)
+notes:			
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+	*******************************************************************/
+	int translation = 0b00000001;	//Standard address to bitshift later(1 pin is always 1 in this method)
+	translation <<= pin - 1;		//Bitshift so the right pin bit is set to 1
+	return translation;
 }
 
 void ExecuteB6(int *state)
@@ -173,9 +187,32 @@ Author	:		Lars Moesman & Rick Verstraten
 	PORTD = 0x00;
 	customWait(waitState[*state], state);
 	
+}
+
+void ExecuteB7b(int lednr)
+/*
+short:			Executes blinking led with certain waits
+inputs:			int* state(state from button)
+outputs:
+notes:			state 1 is button pressed, state 0 is button not pressed
+Version :    	1.0
+Author	:		Lars Moesman & Rick Verstraten
+*******************************************************************/
+{
+	int firstPin = (floor(lednr / 2)) + (lednr % 2);	//Calculates which pin (ascending way)is the first pin 
+	int secondPin = (firstPin % PINS) + 1;				//Calculates which pin (ascending way)is the second pin 
+	int thirdPin = firstPin - secondPin;				
+	if (thirdPin > 0) {thirdPin *= -1;}					//Adjustment if third pin is negative
+	thirdPin = (thirdPin % PINS) + 1;					//Calculates which pin is the pin that needs to be turned off(Input)
 		
+	int address = TranslatePins(firstPin) | TranslatePins(secondPin);	//Merge 2 addresses so it can be set to DDRD
+	DDRD = address;
 	
-	
+	if (lednr % 2 == 0) {
+		PORTD = TranslatePins(secondPin);						//Even LED needs the second pin to be turned on
+	}else{
+		PORTD = TranslatePins(firstPin);						//Odd LED needs the first pin to be turned on
+	}
 }
 
 /******************************************************************/
@@ -188,9 +225,7 @@ notes:			Looping forever, flipping bits on PORTD
 Version :    	DMK, Initial code
 *******************************************************************/
 {	
-	
-	DDRD = 0b11111111;
-	PORTD = 0x03;
+
 	int state = 0;	//state for switching shift direction.
 	while (1)
 	{
@@ -200,9 +235,8 @@ Version :    	DMK, Initial code
 		//ExecuteB5();
 
 		//ExecuteB4knightRider(&state);
-		ExecuteB6(&state);
-		
-		
+		//ExecuteB6(&state);
+		//ExecuteB7b(1);
 	}
 	
 	return 1;
